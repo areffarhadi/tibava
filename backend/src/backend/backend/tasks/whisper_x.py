@@ -28,7 +28,7 @@ from django.conf import settings
 class WhisperXParser(Parser):
     def __init__(self):
         self.valid_parameter = {
-            "timeline": {"parser": str, "default": "WhisperX Transcript"},
+            "timeline": {"parser": str, "default": "Qwen3-ASR Transcript"},
             "language_code": {"parser": str, "default": None},
         }
 

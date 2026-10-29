@@ -191,26 +191,26 @@
         "timeline_name": "RMS Volume"
       },
       "whisper": {
-        "plugin_name": "Speech Recognition (Whisper)",
-        "plugin_description": "This plugin uses <a href=\"https://openai.com/research/whisper\">OpenAI's Whisper model</a> to automatically provide a transcription of the spoken language in the video. It supports more than 100 languages. A list of supported languages can be found <a href=\"https://github.com/openai/whisper?tab=readme-ov-file#available-models-and-languages\">here</a>. <br><br> After performing the plugin, the transcript can be found in the tab \"Transcript\" and you can search for words within it.",
-        "timeline_name": "Whisper Transcript"
+        "plugin_name": "Speech Recognition (Qwen3-ASR)",
+        "plugin_description": "This plugin uses <a href=\"https://github.com/QwenLM/Qwen3-ASR\">Qwen3-ASR-1.7B</a> and Qwen3-ForcedAligner-0.6B to transcribe the spoken language and place word times on the timeline. <br><br> After performing the plugin, the transcript can be found in the tab \"Transcript\" and you can search for words within it.",
+        "timeline_name": "Qwen3-ASR Transcript"
       },
       "whisper_x": {
-        "plugin_name": "Speech and Speaker Recognition (WhisperX)",
-        "plugin_description": "This plugin uses a <a href=\"https://github.com/m-bain/whisperX\">faster version of OpenAI's Whisper model with speaker diarization</a> to automatically provide a transcription of the spoken language in the video (differentiated by the speaker). It supports more than 100 languages. A list of supported languages can be found <a href=\"https://github.com/openai/whisper?tab=readme-ov-file#available-models-and-languages\">here</a>.",
+        "plugin_name": "Speech Recognition with Alignment (Qwen3-ASR)",
+        "plugin_description": "This plugin uses <a href=\"https://github.com/QwenLM/Qwen3-ASR\">Qwen3-ASR-1.7B</a> and Qwen3-ForcedAligner-0.6B to transcribe speech and split it into turns with word times. Turns are one speaker; speaker diarization is not included.",
         "language_code_name": "Language Code",
         "language_code_hint": "If not provided, the spoken language is detected automatically",
-        "timeline_name": "WhisperX Transcript"
+        "timeline_name": "Qwen3-ASR Transcript"
       },
       "audio_emotion": {
         "plugin_name": "Audio Emotion Classification",
         "timeline_name": "Audio Emotion Classification",
-        "plugin_description": "This plugin detects emotions from audio segments (retrieved with WhisperX)."
+        "plugin_description": "This plugin detects emotions with the speech-emotion heads on the Qwen3-ASR-1.7B audio encoder. Segments come from the Qwen3-ASR transcript."
       },
       "audio_gender": {
         "plugin_name": "Audio Gender Classification",
         "timeline_name": "Audio Gender Classification",
-        "plugin_description": "This plugin detects the gender from audio/speech segments (retrieved with WhisperX)."
+        "plugin_description": "This plugin detects the gender from audio/speech segments (retrieved with Qwen3-ASR)."
       },
       "active_speaker_detection": {
         "plugin_name": "Active Speaker Detection",
@@ -257,18 +257,18 @@
       "text_ner": {
         "plugin_name": "Named Entity Recognition and Disambiguation (NERD)",
         "timeline_name": "Named Entities",
-        "plugin_description": "This plugin performs Named Entity Recognition (NER) and subsequently Entity Linking / Disambiguation based on the speaker segments of WhisperX."
+        "plugin_description": "This plugin performs Named Entity Recognition (NER) and subsequently Entity Linking / Disambiguation based on the speech turns from Qwen3-ASR."
       },
       "text_pos": {
         "plugin_name": "PoS Tagging",
         "timeline_name": "PoS Tagging",
-        "plugin_description": "This plugin performs PoS Tagging based on the speaker segments of WhisperX. For each speaker segment the count of each PoS-Tag is shown.",
+        "plugin_description": "This plugin performs PoS Tagging based on the speech turns from Qwen3-ASR. For each turn the count of each PoS-Tag is shown.",
         "language_code_name": "Language Code"
       },
       "text_sentiment": {
         "plugin_name": "Sentiment Analysis",
         "timeline_name": "Speech Sentiment",
-        "plugin_description": "This plugin performs sentiment analysis based on the speaker segments of WhisperX. The predicted label is shown as well as the predicted probabilities for each sentiment.",
+        "plugin_description": "This plugin performs sentiment analysis based on the speech turns from Qwen3-ASR. The predicted label is shown as well as the predicted probabilities for each sentiment.",
         "model_selector_description": "Model Type"
       },
       "blip": {

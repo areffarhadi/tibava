@@ -1,0 +1,20 @@
+{
+  "name": "lid16",
+  "description": "16-class LID head (en de fr es it pt ru pl nl uk ro ar el zh sv + others), 3-head ensemble (qformer tf / mhfa / ecapa) trained directly on the 16 classes",
+  "backbone": "qwen3-asr-1.7b",
+  "encoder": {
+    "model_id": "Qwen/Qwen3-ASR-1.7B",
+    "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "lid16": {
+      "heads": [
+        "lid16/qformer_tf.pt",
+        "lid16/qformer_mhfa.pt",
+        "lid16/qformer_ecapa.pt"
+      ],
+      "max_sec": 20.0
+    }
+  }
+}

@@ -1,6 +1,6 @@
 <template>
   <v-card v-if="noTranscripts" elevation="0" :class="['d-flex', 'flex-column', 'pa-2', 'ma-4']">
-    <span>There is no transcript. Create it with the <em>Speech Recognition (whisper)</em> pipeline.</span>
+    <span>There is no transcript. Create it with the <em>Speech Recognition (Qwen3-ASR)</em> pipeline.</span>
   </v-card>
   <div v-else style="height: 100%;">
     <v-text-field

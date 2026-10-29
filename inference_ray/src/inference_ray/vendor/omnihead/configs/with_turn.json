@@ -1,0 +1,53 @@
+{
+  "name": "default+turn",
+  "description": "Option 1: single LID head s1_qformer_tf (UA-optimal 7-class bias) + sweep1 3-head SER ensemble + end-of-turn head (last 8 s, P(turn complete) > 0.5) + internal VAD (6 encoder attention heads + LR)",
+  "backbone": "qwen3-asr-1.7b",
+  "encoder": {
+    "model_id": "Qwen/Qwen3-ASR-1.7B",
+    "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "lid": {
+      "heads": [
+        "lid/s1_qformer_tf.pt"
+      ],
+      "max_sec": 20.0,
+      "lid7": {
+        "targets": [
+          "en",
+          "fr",
+          "es",
+          "it",
+          "de",
+          "pt"
+        ],
+        "others_log_bias": -4.0
+      }
+    },
+    "ser": {
+      "heads": [
+        "ser/s1_qformer_tf.pt",
+        "ser/s1_qformer_mhfa.pt",
+        "ser/s1_qformer_ecapa.pt"
+      ],
+      "max_sec": 15.0
+    },
+    "turn": {
+      "kind": "turn",
+      "heads": [
+        "turn/turn_head_qwen3asr.pt"
+      ],
+      "max_sec": 8.0,
+      "crop": "last"
+    },
+    "vad": {
+      "kind": "vad",
+      "heads": [
+        "vad/vad_6head_lr.json"
+      ],
+      "max_sec": 120.0,
+      "crop": "chunks"
+    }
+  }
+}

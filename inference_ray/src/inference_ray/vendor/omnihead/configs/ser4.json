@@ -1,0 +1,20 @@
+{
+  "name": "ser4",
+  "description": "4-class SER (anger / neutral / sadness / others), 3-head ensemble trained on the 4 classes (epoch 11)",
+  "backbone": "qwen3-asr-1.7b",
+  "encoder": {
+    "model_id": "Qwen/Qwen3-ASR-1.7B",
+    "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "ser4": {
+      "heads": [
+        "ser4/qformer_tf.pt",
+        "ser4/qformer_mhfa.pt",
+        "ser4/qformer_ecapa.pt"
+      ],
+      "max_sec": 15.0
+    }
+  }
+}

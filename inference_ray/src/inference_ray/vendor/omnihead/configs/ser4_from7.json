@@ -1,0 +1,32 @@
+{
+  "name": "ser4_from7",
+  "description": "7-class SER single head s2_qformer_ecapa; output also merged to anger / neutral / sadness / others",
+  "backbone": "qwen3-asr-1.7b",
+  "encoder": {
+    "model_id": "Qwen/Qwen3-ASR-1.7B",
+    "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "ser": {
+      "heads": [
+        "ser/s2_qformer_ecapa.pt"
+      ],
+      "max_sec": 15.0,
+      "merge": {
+        "classes": [
+          "anger",
+          "neutral",
+          "sadness",
+          "others"
+        ],
+        "map": {
+          "anger": "anger",
+          "neutral": "neutral",
+          "sadness": "sadness"
+        },
+        "default": "others"
+      }
+    }
+  }
+}

@@ -29,7 +29,7 @@ class WhisperParser(Parser):
     def __init__(self):
 
         self.valid_parameter = {
-            "timeline": {"parser": str, "default": "Whisper Transcript"}
+            "timeline": {"parser": str, "default": "Qwen3-ASR Transcript"}
         }
 
 

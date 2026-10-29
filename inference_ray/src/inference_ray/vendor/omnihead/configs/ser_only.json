@@ -1,0 +1,20 @@
+{
+  "name": "ser_only",
+  "description": "Speech emotion heads on the frozen Qwen3-ASR-1.7B audio encoder.",
+  "backbone": "qwen3-asr-1.7b",
+  "encoder": {
+    "model_id": "Qwen/Qwen3-ASR-1.7B",
+    "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "ser": {
+      "heads": [
+        "ser/s1_qformer_tf.pt",
+        "ser/s1_qformer_mhfa.pt",
+        "ser/s1_qformer_ecapa.pt"
+      ],
+      "max_sec": 15.0
+    }
+  }
+}

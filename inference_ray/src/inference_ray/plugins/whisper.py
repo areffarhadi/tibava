@@ -1,17 +1,20 @@
 from inference_ray.plugin import AnalyserPlugin, AnalyserPluginManager
+from inference_ray.qwen_audio import load_asr, resolve_language, transcribe, turns_from_transcription
 from tibava_data import AudioData, AnnotationData, Annotation
 from tibava_data import DataManager, Data
 
-from typing import Callable, Optional, Dict
+from typing import Callable, Dict
 import logging
 
 default_config = {
     "data_dir": "/data/",
     "host": "localhost",
     "port": 6379,
+    "model": "Qwen/Qwen3-ASR-1.7B",
+    "forced_aligner": "Qwen/Qwen3-ForcedAligner-0.6B",
 }
 
-default_parameters = {"sr": 16000, "chunk_length": 30}
+default_parameters = {"sr": 16000, "language_code": None}
 
 requires = {
     "audio": AudioData,
@@ -27,17 +30,13 @@ class Whisper(
     AnalyserPlugin,
     config=default_config,
     parameters=default_parameters,
-    version="0.1",
+    version="0.2",
     requires=requires,
     provides=provides,
 ):
     def __init__(self, config=None, **kwargs):
         super().__init__(config, **kwargs)
-        # inference_config = self.config.get("inference", None)
-        # self.server = InferenceServer.build(inference_config.get("type"), inference_config.get("params", {}))
-
         self.model = None
-        self.model_name = self.config.get("model", "openai/whisper-base")
 
     def call(
         self,
@@ -48,42 +47,31 @@ class Whisper(
     ) -> Dict[str, Data]:
         import librosa
         import torch
-        from transformers import pipeline
 
         device = "cuda:0" if torch.cuda.is_available() else "cpu"
         if self.model is None:
-            self.model = pipeline(
-                "automatic-speech-recognition",
-                model=self.model_name,
-                chunk_length_s=30,
-                device=device,
-            )
-            self.device = device
+            self.model = load_asr(device)
+
+        language = resolve_language((parameters or {}).get("language_code"))
+        sample_rate = int((parameters or {}).get("sr") or 16000)
 
         with (
             inputs["audio"] as input_data,
             data_manager.create_data("AnnotationData") as output_data,
         ):
             with input_data.open_audio("r") as f_audio:
-                y, sr = librosa.load(f_audio, sr=parameters.get("sr"))
-
-                prediction = self.model(
-                    y,
-                    batch_size=8,
-                    return_timestamps=True,
-                    generate_kwargs={"task": "transcribe"},
-                )["chunks"]
-
-                for chunk in prediction:
-                    start = chunk["timestamp"][0]
-                    end = chunk["timestamp"][1]
-                    if start is None:
-                        start = 0.0
-                    if end is None:
-                        end = len(y) / sr
+                samples, sr = librosa.load(f_audio, sr=sample_rate, mono=True)
+                result = transcribe(self.model, samples, sr, language)
+                duration = len(samples) / float(sr) if sr else 0.0
+                for start, end, text in turns_from_transcription(result, duration):
                     output_data.annotations.append(
-                        Annotation(start=start, end=end, labels=[str(chunk["text"])])
+                        Annotation(start=start, end=end, labels=[text])
                     )
+                logging.info(
+                    "Qwen3-ASR language=%s turns=%s",
+                    getattr(result, "language", ""),
+                    len(output_data.annotations),
+                )
 
                 self.update_callbacks(callbacks, progress=1.0)
                 return {"annotations": output_data}

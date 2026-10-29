@@ -1,0 +1,47 @@
+{
+  "name": "default_lid3",
+  "description": "Previous default: 3-head LID ensemble (bias -3.75) + 3-head SER ensemble + internal VAD",
+  "backbone": "qwen3-asr-1.7b",
+  "encoder": {
+    "model_id": "Qwen/Qwen3-ASR-1.7B",
+    "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "lid": {
+      "heads": [
+        "lid/s1_qformer_tf.pt",
+        "lid/s1_qformer_mhfa.pt",
+        "lid/s1_qformer_ecapa.pt"
+      ],
+      "max_sec": 20.0,
+      "lid7": {
+        "targets": [
+          "en",
+          "fr",
+          "es",
+          "it",
+          "de",
+          "pt"
+        ],
+        "others_log_bias": -3.75
+      }
+    },
+    "ser": {
+      "heads": [
+        "ser/s1_qformer_tf.pt",
+        "ser/s1_qformer_mhfa.pt",
+        "ser/s1_qformer_ecapa.pt"
+      ],
+      "max_sec": 15.0
+    },
+    "vad": {
+      "kind": "vad",
+      "heads": [
+        "vad/vad_6head_lr.json"
+      ],
+      "max_sec": 120.0,
+      "crop": "chunks"
+    }
+  }
+}

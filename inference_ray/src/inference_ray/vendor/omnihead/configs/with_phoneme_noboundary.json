@@ -1,0 +1,53 @@
+{
+  "name": "default+phoneme_noboundary",
+  "description": "Option 1 LID/SER heads + CTC phoneme head without word boundaries (best phone accuracy) + internal VAD (6 encoder attention heads + LR)",
+  "backbone": "qwen3-asr-1.7b",
+  "encoder": {
+    "model_id": "Qwen/Qwen3-ASR-1.7B",
+    "revision": "7278e1e70fe206f11671096ffdd38061171dd6e5",
+    "dtype": "bfloat16"
+  },
+  "tasks": {
+    "lid": {
+      "heads": [
+        "lid/s1_qformer_tf.pt"
+      ],
+      "max_sec": 20.0,
+      "lid7": {
+        "targets": [
+          "en",
+          "fr",
+          "es",
+          "it",
+          "de",
+          "pt"
+        ],
+        "others_log_bias": -4.0
+      }
+    },
+    "ser": {
+      "heads": [
+        "ser/s1_qformer_tf.pt",
+        "ser/s1_qformer_mhfa.pt",
+        "ser/s1_qformer_ecapa.pt"
+      ],
+      "max_sec": 15.0
+    },
+    "phoneme": {
+      "kind": "ctc",
+      "heads": [
+        "phoneme/phoneme_tf4_lstm1_k3_noboundary.pt"
+      ],
+      "max_sec": 60.0,
+      "tokens": "zipa_tokens.txt"
+    },
+    "vad": {
+      "kind": "vad",
+      "heads": [
+        "vad/vad_6head_lr.json"
+      ],
+      "max_sec": 120.0,
+      "crop": "chunks"
+    }
+  }
+}

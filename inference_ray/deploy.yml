@@ -531,7 +531,8 @@ applications:
       model: whisper
       data_path: /data
       params:
-        model: openai/whisper-medium
+        model: Qwen/Qwen3-ASR-1.7B
+        forced_aligner: Qwen/Qwen3-ForcedAligner-0.6B
     deployments:
       - name: Deployment
         autoscaling_config:
@@ -540,11 +541,14 @@ applications:
 
           runtime_env:
             uv:
+              - qwen-asr==0.0.6
+              - torch>=2.6.0
+              - torchaudio
+              - transformers==4.57.6
               - librosa==0.10.1
               - setuptools<82
-              - torch==2.2.0
-              - scikit-learn==1.4.0
-              - transformers==4.37.2
+              - soxr
+              - sentencepiece
 
   - name: x_clip_video_embedding
     route_prefix: /x_clip_video_embedding
@@ -895,12 +899,14 @@ applications:
           num_cpus: 2
           runtime_env:
             uv:
-              - git+https://github.com/m-bain/whisperx.git
+              - qwen-asr==0.0.6
+              - torch>=2.6.0
+              - torchaudio
+              - transformers==4.57.6
               - librosa==0.10.1
               - setuptools<82
-              - torch>=2.6.0
-              - scikit-learn>=1.6.1
-              - transformers>=4.48.3
+              - soxr
+              - sentencepiece
   - name: audio_emotion
     route_prefix: /audio_emotion
     import_path: inference_ray.main:app_builder
@@ -916,11 +922,14 @@ applications:
           num_cpus: 2
           runtime_env:
             uv:
+              - qwen-asr==0.0.6
+              - torch>=2.6.0
+              - torchaudio
+              - transformers==4.57.6
               - librosa==0.10.1
               - setuptools<82
-              - torch>=2.6.0
-              - transformers>=4.48.3
-              - speechbrain==1.0.2
+              - soxr
+              - sentencepiece
   - name: audio_gender
     route_prefix: /audio_gender
     import_path: inference_ray.main:app_builder
@@ -940,7 +949,6 @@ applications:
               - setuptools<82
               - torch>=2.6.0
               - transformers>=4.48.3
-              - speechbrain==1.0.2
   - name: active_speaker_detection
     route_prefix: /active_speaker_detection
     import_path: inference_ray.main:app_builder

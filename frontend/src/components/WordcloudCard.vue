@@ -3,7 +3,7 @@
     :class="['d-flex', 'flex-column', 'pa-2', 'ma-4']">
     <v-card v-if="transcripts.length == 0" flat>
       <span>There is no transcript. Create it with the <em>Speech Recognition
-          (whisper)</em> pipeline.
+          (Qwen3-ASR)</em> pipeline.
       </span>
     </v-card>
     <div v-else>

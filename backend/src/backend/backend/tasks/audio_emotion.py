@@ -178,13 +178,24 @@ class AudioEmotion(Task):
 
         with transaction.atomic():
             with result[1]["annotations"] as ann_data:
-                emotions = {"neutral": 0, "angry": 1, "happy": 2, "sad": 3}
+                emotions = {
+                    "anger": 0,
+                    "disgust": 1,
+                    "fear": 2,
+                    "happiness": 3,
+                    "neutral": 4,
+                    "sadness": 5,
+                    "surprise": 6,
+                }
 
                 color_mapping = {
-                    "neutral": "#D0D0D0",  # gray
-                    "happy": "#B6C192",  # green
-                    "angry": "#E87B7E",  # red
-                    "sad": "#4986FF",  # blue
+                    "anger": "#E87B7E",
+                    "disgust": "#8D6E63",
+                    "fear": "#7E57C2",
+                    "happiness": "#B6C192",
+                    "neutral": "#D0D0D0",
+                    "sadness": "#4986FF",
+                    "surprise": "#F6C945",
                 }
 
                 result_timelines = create_timelines(
